@@ -24,6 +24,11 @@ public class BTNode<T> {
         return this.data != null && this.left.isEmpty() && this.right.isEmpty();
     }
 
+	public boolean isLeaf2(){
+        return this.data != null && (left.getLeft() == null || left.getLeft().isEmpty())
+                            && (left.getRight() == null || left.getRight().isEmpty());
+    }
+
     @Override
 	public String toString() {
 		String resp = "NIL";

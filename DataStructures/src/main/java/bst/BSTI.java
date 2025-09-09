@@ -57,29 +57,28 @@ public class BSTI<T extends Comparable<T>>  implements BST<T> {
     }
 
     @Override
-    public void insert(T value) {
-       if(value != null && this.search(value).isEmpty()) {
-            this.insert(value, this.getRoot());
-       }
-    }
+   public void insert(T element) {
+		if (element != null && search(element).isEmpty()) {
+			this.insert(this.getRoot(), element);
+		}
 
-    private void insert(T value, BTNode<T> node){
-        if(node.isEmpty()){
-            node.setData(value);
-            node.setLeft(new BTNode<T>());
-            node.setRight(new BSTNode<T>());
-            node.getLeft().setParent(node);
-            node.getRight().setParent(node);
-        }
-        else{
-            if(node.getData().compareTo(value) < 0){
-                this.insert(value, (BSTNode<T>) node.getLeft());
-            }
-            else{
-                this.insert(value, (BSTNode<T>) node.getRight());
-            }
-        }
-    }
+	}
+
+	private void insert(BSTNode<T> node, T element) {
+		if (node.isEmpty()) {
+			node.setData(element);
+			node.setLeft(new BSTNode<>());
+			node.setRight(new BSTNode<>());
+			node.getLeft().setParent(node);
+			node.getRight().setParent(node);
+		} else {
+			if (node.getData().compareTo(element) > 0) {
+				insert((BSTNode<T>) node.getLeft(), element);
+			} else {
+				insert((BSTNode<T>) node.getRight(), element);
+			}
+		}
+	}
 
     @Override
 	public void remove(T element) {

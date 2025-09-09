@@ -1,5 +1,6 @@
 package heap;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
 public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
@@ -52,14 +53,27 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 
     @Override
     public boolean isEmpty() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isEmpty'");
+        return index == -1;
     }
 
     @Override
     public void insert(T element) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'insert'");
+        // ESSE CODIGO E PARA A HEAP CRESCER SE FOR PRECISO. NAO MODIFIQUE
+		if (index == heap.length - 1) {
+			heap = Arrays.copyOf(heap, heap.length + INCREASING_FACTOR);
+		}
+		insert(this.heap, element);
+    }
+
+    private void insert(T[] array, T element){
+        if(element != null){
+            int i = ++this.index;
+            while(i > 0 && this.getComparator().compare(array[parent(i)], element) < 0){
+                array[i] = array[parent(i)];
+                i = parent(i);
+            }
+            array[i] = element;
+        }
     }
 
     @Override
@@ -97,5 +111,17 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'size'");
     }
+
+    public Comparator<T> getComparator() {
+		return comparator;
+	}
+
+	public void setComparator(Comparator<T> comparator) {
+		this.comparator = comparator;
+	}
+
+	public T[] getHeap() {
+		return heap;
+	}
 
 }
