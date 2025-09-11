@@ -7,6 +7,7 @@ import javax.swing.tree.TreeNode;
 
 
 
+
 public class LeetCode<T extends Comparable<T>> {
     public BSTNode<T> searchBST(BSTNode<T> node, T val) {
         return searchBSTRec(node, val);
@@ -266,205 +267,85 @@ public class LeetCode<T extends Comparable<T>> {
         return result;
      }
 
-     public Integer minDiffInBST(BSTNode<T> node){
-        return minDiffInBSTRec(node, null, Integer.MAX_VALUE);
+     public Integer minDiffInBST(BSTNode<Integer> node){
+        Integer[] result = new Integer[]{-1, node.getData()};
+        this.minDiffInBSTRec(node, result);
+        return result[1];
      }
 
-      private Integer minDiffInBSTRec(BSTNode<T> node, T last, Integer minDiff){
-        Integer result = minDiff;
+      private void minDiffInBSTRec(BSTNode<Integer> node, Integer[] last){
 
         if(node != null && !node.isEmpty()){
-            minDiff = minDiffInBSTRec((BSTNode<T>) node.getLeft(), last, minDiff);
+            this.minDiffInBSTRec((BSTNode<Integer>) node.getLeft(), last);
 
-            if(last != null){
-                minDiff = minDiff.compareTo((Integer) node.getData() - (Integer) last) < 0 ? minDiff : (Integer) node.getData() - (Integer) last;
+            if(last[0] != -1){
+                Integer dif = node.getData() - last[0];
+                if(dif < last[1]){
+                    last[1] = dif;
+                }
             }
-            minDiff = minDiffInBSTRec((BSTNode<T>) node.getRight(), node.getData(), minDiff);
+            
+            last[0] = node.getData();
+
+           this.minDiffInBSTRec((BSTNode<Integer>)node.getRight(), last);
         }
-        return minDiff;
       }
 
+      public int diameterOfBinaryTree(BSTNode<T> node){
+        int result = 0;
 
-    public static void main(String[] args) {
-        LeetCode<Integer> test = new LeetCode<>();
+        if(node != null && !node.isEmpty()){
+            int leftH = diameterOfBinaryTreeRec((BSTNode) node.getLeft());
+            int rightH = diameterOfBinaryTreeRec((BSTNode) node.getRight());
+            int d1 = diameterOfBinaryTree((BSTNode)node.getLeft());
+            int d2 = diameterOfBinaryTree((BSTNode)node.getRight());
+    
+            int max = 0;
+            if(d1 > d2){
+                max = d1;
+            }
+            else{
+                max = d2;
+            }
+    
+            int sumH = leftH + rightH;
+            if(sumH > max){
+                result = sumH;
+            }
+            else{
+                result = max;
+            }
 
-        BSTI bst = new BSTI<>();
-        Integer[] a = new Integer[]{1,2,3,4,5,6,7,8};
-        for(Integer val : a) bst.insert(val);
+        }
 
-            BSTNode<Integer> emptyNode = new BSTNode<>();
+        return result;
+      }
 
+      private int diameterOfBinaryTreeRec(BSTNode<T> node){
+        int result = 0;
+        if(node != null && !node.isEmpty()){
+            result = 1 + Math.max(diameterOfBinaryTreeRec((BSTNode) node.getLeft()), diameterOfBinaryTreeRec((BSTNode) node.getRight()));
+        }
+        return result;
+      }
 
-          BSTNode<Integer> root = new BSTNode.Builder<Integer>()
-        .data(10)
-        .left(new BSTNode.Builder<Integer>().data(4)
-            .left(emptyNode)
-            .right(emptyNode)
-            .build())
-        .right(new BSTNode.Builder<Integer>().data(6)
-            .left(emptyNode)
-            .right(emptyNode)
-            .build())
-        .build();
-
-          // Árvore 1
-        BSTNode<Integer> root1 = new BSTNode.Builder<Integer>()
-                .data(1)
-                .left(new BSTNode.Builder<Integer>().data(3)
-                        .left(new BSTNode.Builder<Integer>().data(5).build())
-                        .build())
-                .right(new BSTNode.Builder<Integer>().data(2).build())
-                .build();
-
-        // Árvore 2
-        BSTNode<Integer> root2 = new BSTNode.Builder<Integer>()
-                .data(2)
-                .left(new BSTNode.Builder<Integer>().data(1)
-                        .right(new BSTNode.Builder<Integer>().data(4).build())
-                        .build())
-                .right(new BSTNode.Builder<Integer>().data(3)
-                        .right(new BSTNode.Builder<Integer>().data(7).build())
-                        .build())
-                .build();
-
-        BSTNode<Integer> merged = test.mergeTrees(root1, root2);
-            
-
-        BSTNode<Integer> root23 = new BSTNode.Builder<Integer>()
-            .data(3)
-            .left(new BSTNode.Builder<Integer>().data(9).build())
-            .right(new BSTNode.Builder<Integer>()
-                    .data(20)
-                    .left(new BSTNode.Builder<Integer>().data(15).build())
-                    .right(new BSTNode.Builder<Integer>().data(7).build())
-                    .build())
-            .build();
-
-             // Teste 1: simétrica
-        BSTNode<Integer> root12 = new BSTNode.Builder<Integer>()
-                .data(1)
-                .left(new BSTNode.Builder<Integer>()
-                        .data(2)
-                        .left(new BSTNode.Builder<Integer>().data(3).build())
-                        .right(new BSTNode.Builder<Integer>().data(4).build())
-                        .build())
-                .right(new BSTNode.Builder<Integer>()
-                        .data(2)
-                        .left(new BSTNode.Builder<Integer>().data(4).build())
-                        .right(new BSTNode.Builder<Integer>().data(3).build())
-                        .build())
-                .build();
-
-        BSTNode<Integer> root32 = new BSTNode.Builder<Integer>()
-        .data(5)
-        .left(new BSTNode.Builder<Integer>()
-                .data(3)
-                .left(new BSTNode.Builder<Integer>().data(2).build())
-                .right(new BSTNode.Builder<Integer>().data(4).build())
-                .build())
-        .right(new BSTNode.Builder<Integer>()
-                .data(7)
-                .left(new BSTNode.Builder<Integer>().data(6).build())
-                .right(new BSTNode.Builder<Integer>().data(8).build())
-                .build())
-        .build();
-
-        BSTNode<Integer> root34 = new BSTNode.Builder<Integer>().data(5).build();
-        BSTNode<Integer> n4 = new BSTNode.Builder<Integer>().data(4).build();
-        BSTNode<Integer> n8 = new BSTNode.Builder<Integer>().data(8).build();
-        BSTNode<Integer> n11 = new BSTNode.Builder<Integer>().data(11).build();
-        BSTNode<Integer> n13 = new BSTNode.Builder<Integer>().data(13).build();
-
-        // conecta
-       root34.setLeft(n4);
-        root34.setRight(n8);
-        n8.setLeft(n11);
-        n8.setRight(n13);
-
-        BSTNode<Integer> root73 = new BSTNode.Builder<Integer>().data(10).build();
-        BSTNode<Integer> n5 = new BSTNode.Builder<Integer>().data(5).build();
-        BSTNode<Integer> n15 = new BSTNode.Builder<Integer>().data(15).build();
-        BSTNode<Integer> n3 = new BSTNode.Builder<Integer>().data(3).build();
-        BSTNode<Integer> n7 = new BSTNode.Builder<Integer>().data(7).build();
-        BSTNode<Integer> n18 = new BSTNode.Builder<Integer>().data(18).build();
-
-        root73.setLeft(n5);
-        root73.setRight(n15);
-        n5.setLeft(n3);
-        n5.setRight(n7);
-        n15.setRight(n18);
-
-        BSTNode<Integer> root5 = new BSTNode.Builder<Integer>()
-        .data(4)
-        .left(new BSTNode.Builder<Integer>()
-            .data(2)
-            .left(new BSTNode.Builder<Integer>().data(1).build())
-            .right(new BSTNode.Builder<Integer>().data(3).build())
-            .build())
-        .right(new BSTNode.Builder<Integer>()
-            .data(7)
-            .left(new BSTNode.Builder<Integer>().data(6).build())
-            .right(new BSTNode.Builder<Integer>().data(9).build())
-            .build())
-        .build();
-
-
-        BSTNode<Integer> root67 = new BSTNode.Builder<Integer>()
-        .data(6)
-        .left(new BSTNode.Builder<Integer>()
-            .data(2)
-            .left(new BSTNode.Builder<Integer>().data(0).build())
-            .right(new BSTNode.Builder<Integer>()
-                .data(4)
-                .left(new BSTNode.Builder<Integer>().data(3).build())
-                .right(new BSTNode.Builder<Integer>().data(5).build())
-                .build())
-            .build())
-        .right(new BSTNode.Builder<Integer>()
-            .data(8)
-            .left(new BSTNode.Builder<Integer>().data(7).build())
-            .right(new BSTNode.Builder<Integer>().data(9).build())
-            .build())
-        .build();
-
-        BSTNode<Integer> root56 = new BSTNode.Builder<Integer>()
-        .data(4)
-        .left(new BSTNode.Builder<Integer>()
-            .data(2)
-            .left(new BSTNode.Builder<Integer>().data(1).build())
-            .right(new BSTNode.Builder<Integer>().data(3).build())
-            .build())
-        .right(new BSTNode.Builder<Integer>()
-            .data(6)
-            .build())
-        .build();
-        
-        //System.out.println(test.searchBST(bst.getRoot(), 12));
-        //System.out.println(test.preorderTraversal(bst.getRoot()));
-        //System.out.println(test.inorderTraversal(bst.getRoot()));
-        //System.out.println(test.checkTree(root));
-        //printPreOrder(merged); 
-        //System.out.println(test.sumOfLeftLeaves(root23));
-        //System.out.println(test.isSymmetric(root12));
-        //System.out.println(test.kthSmallest(root32, 1));
-        //System.out.println(test.hasPathSum(root34, 24));
-        //System.out.println(test.rangeSumBST(root73, 7, 15));
-        // System.out.print("Pré-ordem antes da inversão: ");
-        // printPreOrder(root5);
-        // System.out.println();
-        // test.invertTree(root5);
-        // System.out.print("Pré-ordem depois da inversão: ");
-        // printPreOrder(root5);
-        // System.out.println()
-        //System.out.println(test.lowestCommonAncestor(root67, 2, 8).getData());
-          System.out.println("Diferença mínima: " + test.minDiffInBST(root56)); // esperado: 1
-        
+      public Integer sumNumbers(BSTNode root) {
+        return sumNumbersRec(root, 0);
     }
+    
+    public Integer sumNumbersRec(BSTNode root, int cur) {
+        Integer result = 0;
 
-    private static void printPreOrder(BSTNode<Integer> node) {
-        if (node == null) return;
-        System.out.print(node.getData() + " ");
-        printPreOrder((BSTNode<Integer>) node.getLeft());
-        printPreOrder((BSTNode<Integer>) node.getRight());
-    }
+        if(root != null && !root.isEmpty()){
+            int next = cur * 10 + (Integer) root.getData();
+
+            if(root.getLeft() == null && root.getRight() == null){
+                result = next;
+            }
+            else{
+                result = this.sumNumbersRec((BSTNode) root.getLeft(), next) + this.sumNumbersRec((BSTNode) root.getRight(), next);
+            }
+        }
+        return result;
+    }   
 }
