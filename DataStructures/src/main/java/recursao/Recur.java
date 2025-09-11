@@ -177,51 +177,6 @@ public class Recur<T> {
         return result;
     }
 
-    
-
-
-    public static void main(String[] args) {
-        int[] a = new int[]{
-            1, 2, 3, 4, 4
-        };
-        Recur r = new Recur();
-
-        // System.out.println(r.somaA(a, 0));
-        // System.out.println(r.maxInArray(a, 0));
-        // System.out.println(r.contains(a, 0, 2));
-        // System.out.println(r.cout(a, 0, 4));
-        // r.inversion(a, 0, a.length-1);
-        // System.out.println(Arrays.toString(a));
-
-        Node head = new Node(1); 
-        head.next = new Node(2); 
-        head.next.next = new Node(3); 
-        head.next.next.next = new Node(12);
-
-        // System.out.println(r.sumLinkedList(head)); 
-        // System.out.println(r.searchLast(head)); 
-        // System.out.println(r.CountNodes(head));
-        // System.out.println(r.search(head, 3));
-        // r.setHead(head);
-        // r.listInversion();
-
-        BSTNode<Integer> root = new BSTNode<>(10);
-        BSTNode<Integer> n4 = new BSTNode<>(4);
-        BSTNode<Integer> n15 = new BSTNode<>(15);
-        BSTNode<Integer> n2 = new BSTNode<>(2);
-        BSTNode<Integer> n7 = new BSTNode<>(7);
-
-        root.setLeft(n4);
-        root.setRight(n15);
-        n4.setLeft(n2);
-        n4.setRight(n7);
-
-        //System.out.println(r.sumNodes(root));
-        System.out.println(r.height(root));
-        System.out.println(r.countLeaf(root));
-        
-    }
-
     public Node getHead(){
         return this.head;
     }
