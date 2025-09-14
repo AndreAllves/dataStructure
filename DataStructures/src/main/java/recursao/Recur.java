@@ -195,36 +195,6 @@ public class Recur<T> {
         return result;
     }
 
-      public static void main(String[] args) {
-        BSTNode<Integer> root = new BSTNode.Builder<Integer>().data(10).build();
-        BSTNode<Integer> n5 = new BSTNode.Builder<Integer>().data(5).build();
-        BSTNode<Integer> n15 = new BSTNode.Builder<Integer>().data(15).build();
-        BSTNode<Integer> n2 = new BSTNode.Builder<Integer>().data(2).build();
-        BSTNode<Integer> n7 = new BSTNode.Builder<Integer>().data(7).build();
-        BSTNode<Integer> n20 = new BSTNode.Builder<Integer>().data(20).build();
-
-        root.setLeft(n5);
-        root.setRight(n15);
-        n5.setLeft(n2);
-        n5.setRight(n7);
-        n15.setRight(n20);
-
-        Recur r = new Recur<>();
-        Node<Integer> head = r.bstLinkedList(root);
-
-        // imprimir lista recursivamente
-        printList(head);
-    }
-
-    private static <T> void printList(Node<T> node) {
-        if(node == null) {
-            System.out.println("null");
-            return;
-        }
-        System.out.print(node.data + " -> ");
-        printList(node.next);
-    }
-
     public Node getHead(){
         return this.head;
     }
