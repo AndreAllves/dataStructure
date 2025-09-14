@@ -3,11 +3,6 @@ package bst;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.tree.TreeNode;
-
-
-
-
 public class LeetCode<T extends Comparable<T>> {
     public BSTNode<T> searchBST(BSTNode<T> node, T val) {
         return searchBSTRec(node, val);
@@ -188,11 +183,11 @@ public class LeetCode<T extends Comparable<T>> {
 		return size;
 	}
 
-     public static boolean hasPathSum(BSTNode<Integer> node, Integer target){
+     public  boolean hasPathSum(BSTNode<Integer> node, Integer target){
         return hasPathSumRec(node, target);
     }
 
-    private static boolean hasPathSumRec(BSTNode<Integer> node, Integer target){
+    private  boolean hasPathSumRec(BSTNode<Integer> node, Integer target){
         boolean result = false;
         if(node != null || !node.isEmpty()){
             if(node.getLeft() == null && node.getRight() == null){
@@ -347,5 +342,77 @@ public class LeetCode<T extends Comparable<T>> {
             }
         }
         return result;
-    }   
+    }
+    
+    public int getMinimumDifference(BSTNode<Integer> node){
+        Integer[] result = new Integer[]{-1, node.getData()};
+        this.getMinimumDifferenceRec(node, result);
+        return result[1];
+     }
+
+      private void getMinimumDifferenceRec(BSTNode<Integer> node, Integer[] last){
+
+        if(node != null && !node.isEmpty()){
+            this.getMinimumDifferenceRec((BSTNode<Integer>) node.getLeft(), last);
+
+            if(last[0] != -1){
+                Integer dif = node.getData() - last[0];
+                if(dif < last[1]){
+                    last[1] = dif;
+                }
+            }
+            
+            last[0] = node.getData();
+
+           this.getMinimumDifferenceRec((BSTNode<Integer>)node.getRight(), last);
+        }
+      }
+
+       public boolean isValidBST(BSTNode<T> node){
+        return this.isValidBSTRec(node, null, null);
+       }
+
+       private boolean isValidBSTRec(BSTNode<T> node, Integer min, Integer max){
+        boolean result = true;
+        if(node != null && !node.isEmpty()){
+            Integer data = (Integer) node.getData();
+            if((min != null && data.compareTo(min) <= 0) || (max != null && data.compareTo(max) >= 0)){
+                result = false;
+            }
+            else{
+                result = this.isValidBSTRec((BSTNode<T>) node.getLeft(), min, data) && this.isValidBSTRec((BSTNode<T>) node.getRight(), data, max) ;
+            }
+        }
+        return result;       
+       }
+
+        public boolean findTarget(BSTNode<Integer> root, Integer k) {
+            boolean result = false;
+            if (root != null && !root.isEmpty()) {
+                if (findTargetRec(root, root, k - root.getData())) {
+                    result = true;
+                }
+                if (findTarget((BSTNode<Integer>) root.getLeft(), k)) {
+                    result = true;
+                }
+                if (findTarget((BSTNode<Integer>) root.getRight(), k)) {
+                    result = true;
+                }
+            }
+            return result;
+        }
+
+        private boolean findTargetRec(BSTNode<Integer> root, BSTNode<Integer> skip, Integer data) {
+            boolean result = false;
+            if (root != null && !root.isEmpty()) {
+                if (root.getData().equals(data) && root != skip) {
+                    result = true;
+                } else if (data < root.getData()) {
+                    result = findTargetRec((BSTNode<Integer>) root.getLeft(), skip, data);
+                } else {
+                    result = findTargetRec((BSTNode<Integer>) root.getRight(), skip, data);
+                }
+            }
+            return result;
+        }
 }

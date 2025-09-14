@@ -1,12 +1,15 @@
 package recursao;
 
-public class Node {
+public class Node<T> {
     int data;  
     Node next;      
 
     public Node(int data) {
         this.data = data;
         this.next = null;
+    }
+
+    public Node(){
     }
 
     public int getData(){
@@ -24,4 +27,6 @@ public class Node {
     public void setNext(Node next){
         this.next = next;
     }
+
+    
 }
